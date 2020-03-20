@@ -31,7 +31,7 @@ lazy val buildDependencies = Seq(
 val testDependencies = Seq(
   "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % "it,test",
   "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % "it,test",
-  "org.scalatest"     %% "scalatest" % "3.0.8" % "it,test"
+  "org.scalatest"     %% "scalatest" % "3.1.1" % "it,test"
 )
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
