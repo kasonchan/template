@@ -11,7 +11,21 @@
         <appender-ref ref="STDOUT" />
     </appender>
 
-    <root level="DEBUG">
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${application.home:-.}/logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover with compression -->
+            <fileNamePattern>${application.home:-.}/logs/application-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <!-- keep 30 days worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{"yyyy-MM-dd'T'HH:mm:ss,SSSXXX", UTC} %-5level %logger{15} %thread{25} %X{akkaSource} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
         <appender-ref ref="ASYNC"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

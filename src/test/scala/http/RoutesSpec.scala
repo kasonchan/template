@@ -1,3 +1,5 @@
+package http
+
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import http.HttpService.routes

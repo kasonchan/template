@@ -1,3 +1,5 @@
+package app
+
 import com.typesafe.config.{Config, ConfigFactory}
 
 /**
@@ -7,6 +9,6 @@ import com.typesafe.config.{Config, ConfigFactory}
 object Profile {
   implicit val config: Config = ConfigFactory.load()
   val serviceName: String = config.getString("ad.service.name")
-  val host: String = config.getString("ad.service.host")
-  val port: Int = config.getInt("ad.service.port")
+  val serviceHost: String = config.getString("ad.service.host")
+  val servicePort: Int = config.getInt("ad.service.port")
 }

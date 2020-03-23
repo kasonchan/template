@@ -1,6 +1,8 @@
-import Profile.{serviceHost, serviceName, servicePort}
-import org.scalatest.wordspec.AnyWordSpec
+package app
+
+import app.Profile.{serviceHost, serviceName, servicePort}
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 /**
   * @author kasonchan
