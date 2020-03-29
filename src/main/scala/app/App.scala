@@ -3,11 +3,10 @@ package app
 import akka.actor.typed.scaladsl.AskPattern._
 import akka.actor.typed.{ActorRef, ActorSystem}
 import akka.util.Timeout
-import app.Profile.serviceName
+import app.Profile.{bindingTimeoutInMilliseconds, serviceName}
 import behaviors.{Guardian, System}
 import protocol.message.{Message, Request}
 
-import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
 /**
@@ -18,7 +17,7 @@ object App {
   implicit val system: ActorSystem[Message] = ActorSystem(System(), serviceName)
   implicit val guardian: ActorRef[Message] =
     system.systemActorOf(Guardian(), "guardian")
-  implicit val timeout: Timeout = 30.seconds
+  implicit val timeout: Timeout = bindingTimeoutInMilliseconds
   implicit val ec: ExecutionContextExecutor = system.executionContext
   lazy val init: Future[Message] =
     guardian.ask(ref => Request(protocol.command.Activate, ref))
