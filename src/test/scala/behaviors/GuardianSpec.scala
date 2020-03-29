@@ -81,6 +81,16 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       behaviorTestKit.logEntries() mustBe expectedLogEntries2
     }
 
+    "returns nothing after receiving Response request" in {
+      val behaviorTestKit = BehaviorTestKit(Guardian())
+      val guardian = TestInbox[Message]()
+      val expectedLogEntries = Seq(CapturedLogEvent(Level.INFO, "[STARTING]"))
+
+      behaviorTestKit.run(Response(Starting))
+      guardian.receiveAll() mustBe Seq()
+      behaviorTestKit.logEntries() mustBe expectedLogEntries
+    }
+
     "returns Ready after receiving Activate request, Ready response and Status request" in {
       val behaviorTestKit = BehaviorTestKit(Guardian())
       val guardian = TestInbox[Message]()

@@ -13,7 +13,7 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
   * @author kasonchan
   * @since 2020-03-15
   */
-object App {
+object App extends {
   implicit val system: ActorSystem[Message] = ActorSystem(System(), serviceName)
   implicit val guardian: ActorRef[Message] =
     system.systemActorOf(Guardian(), "guardian")
@@ -21,8 +21,4 @@ object App {
   implicit val ec: ExecutionContextExecutor = system.executionContext
   lazy val init: Future[Message] =
     guardian.ask(ref => Request(protocol.command.Activate, ref))
-
-  def main(args: Array[String]): Unit = {
-    init
-  }
 }

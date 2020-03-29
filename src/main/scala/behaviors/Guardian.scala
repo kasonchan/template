@@ -35,9 +35,9 @@ object Guardian {
           context.log
             .info("[{}]", responseStatus.toString.toUpperCase)
           responseStatus match {
-            case Ready => ready()
-            case Fatal => fatal()
-            case _     => Behaviors.same
+            case Ready    => ready()
+            case Fatal    => fatal()
+            case Starting => Behaviors.same
           }
       }
     }
