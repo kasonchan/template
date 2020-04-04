@@ -1,18 +1,14 @@
-# SBT
+*.class
+*.DS_Store
+*.log
+.cache
+.history
+.idea
+.lib/
 dist/*
-target/
 lib_managed/
-src_managed/
+logs/
 project/boot/
 project/plugins/project/
-.history
-.cache
-.lib/
-logs/
-
-# Idea
-.idea
-
-# Scala
-*.class
-*.log
+src_managed/
+target/

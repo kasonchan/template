@@ -1,3 +1,5 @@
+cd template
+
 sbt scalastyle > target/scalastyle.out 2>&1
 if [$? -gt 0]; then
   echo "Scalastyle failed. Check target/scalastyle.out and target/scalastyle-result.xml for more details."
