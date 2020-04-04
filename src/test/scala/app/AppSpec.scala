@@ -2,7 +2,7 @@ package app
 
 import akka.actor.typed.scaladsl.AskPattern._
 import akka.actor.typed.{ActorRef, ActorSystem}
-import app.App.{guardian, system, init}
+import app.Service.{guardian, system, init}
 import app.Profile.serviceName
 import behaviors.{Guardian, System}
 import org.scalatest.matchers.must.Matchers

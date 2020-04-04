@@ -1,7 +1,7 @@
 package behaviors
 
-import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{Behavior, DispatcherSelector}
 import protocol.message.{Message, Request, Response}
 import protocol.status.{Fatal, Ready, Starting, Status}
 
@@ -17,7 +17,8 @@ object Guardian {
       Behaviors.receiveMessage {
         case Request(protocol.command.Activate, replyTo) =>
           context.log.info("[{}]", currentStatus.toString.toUpperCase)
-          val web = context.spawn(Web(), "web")
+          // https://doc.akka.io/docs/akka/current/typed/dispatchers.html#selecting-a-dispatcher
+          val web = context.spawn(Web(), "web", DispatcherSelector.blocking())
           web ! Request(protocol.command.Activate, context.self)
           context.log
             .info(

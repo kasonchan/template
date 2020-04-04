@@ -63,7 +63,7 @@ object Web {
           }
         case Request(Status, replyTo) =>
           replyTo ! Response(currentStatus)
-          context.log.info("[{}]", Fatal.toString.toUpperCase)
+          context.log.info("[{}]", currentStatus.toString.toUpperCase)
           Behaviors.same
         case message: Message =>
           context.log.debug("{}", message)

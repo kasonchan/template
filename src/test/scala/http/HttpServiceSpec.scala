@@ -3,7 +3,7 @@ package http
 import java.net.InetSocketAddress
 
 import akka.stream.BindFailedException
-import app.App.system
+import app.Service.system
 import app.Profile.bindingTimeoutInMilliseconds
 import http.HttpService.{routes, start}
 import org.scalatest.matchers.must.Matchers
