@@ -1,7 +1,7 @@
 package behaviors
 
 import akka.actor.testkit.typed.scaladsl.ActorTestKit
-import app.Profile.bindingTimeoutInMilliseconds
+import app.Profile
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import protocol.command.{Activate, Status}
@@ -13,7 +13,7 @@ import protocol.status.{Fatal, Ready, Starting}
   * @since 2020-03-28
   */
 class WebSpec extends AnyWordSpec with Matchers {
-  private val timeoutInMilliseconds = bindingTimeoutInMilliseconds
+  private val timeoutInMilliseconds = Profile.bindingTimeoutInMilliseconds
 
   "Starting Web" must {
     "returns Ready after receiving Activate request if server bind successfully" in {

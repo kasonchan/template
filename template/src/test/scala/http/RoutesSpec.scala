@@ -17,8 +17,8 @@ class RoutesSpec
     with ScalaFutures
     with ScalatestRouteTest {
   "routes" should {
-    "returns READY (GET /users)" in {
-      HttpRequest(uri = "/") ~> routes ~> check {
+    "returns READY (GET /status)" in {
+      HttpRequest(uri = "/status") ~> routes ~> check {
         status should ===(StatusCodes.OK)
         contentType should ===(ContentTypes.`text/plain(UTF-8)`)
         entityAs[String] should ===("READY")

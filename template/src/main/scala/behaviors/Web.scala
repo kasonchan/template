@@ -4,7 +4,7 @@ import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
-import app.Profile.{bindingTimeoutInMilliseconds, serviceHost, servicePort}
+import app.Profile
 import http.HttpService
 import protocol.command.{Activate, Status}
 import protocol.message.{Message, Request, Response}
@@ -32,8 +32,8 @@ object Web {
           context.log.info("[{}]", currentStatus.toString.toUpperCase)
           val futureBinding: Future[Http.ServerBinding] =
             HttpService.start(
-              serviceHost,
-              servicePort,
+              Profile.serviceHost,
+              Profile.servicePort,
               httpServer.routes,
               context.system
             )
@@ -44,7 +44,7 @@ object Web {
             Ready.toString.toUpperCase
           )
           Try {
-            Await.result(futureBinding, bindingTimeoutInMilliseconds)
+            Await.result(futureBinding, Profile.bindingTimeoutInMilliseconds)
           } match {
             case Success(v) =>
               context.log.info("Successfully bounded to {}", v.localAddress)

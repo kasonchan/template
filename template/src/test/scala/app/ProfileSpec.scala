@@ -1,11 +1,5 @@
 package app
 
-import app.Profile.{
-  bindingTimeoutInMilliseconds,
-  serviceHost,
-  serviceName,
-  servicePort
-}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -22,18 +16,18 @@ class ProfileSpec extends AnyWordSpec with Matchers {
   private val expectedBindingTimeoutInMilliseconds = 30000.milliseconds
 
   "ad.service.name" should {
-    s"equals to ${expectedServiceName}" in serviceName === expectedServiceName
+    s"equals to ${expectedServiceName}" in Profile.serviceName === expectedServiceName
   }
 
   "ad.service.host" should {
-    s"equals to ${expectedServiceHost}" in serviceHost === expectedServiceHost
+    s"equals to ${expectedServiceHost}" in Profile.serviceHost === expectedServiceHost
   }
 
   "ad.service.port" should {
-    s"equals to ${expectedServicePort}" in servicePort === expectedServicePort
+    s"equals to ${expectedServicePort}" in Profile.servicePort === expectedServicePort
   }
 
   "ad.service.binding.timeout.in.seconds" should {
-    s"equals to ${expectedBindingTimeoutInMilliseconds}" in bindingTimeoutInMilliseconds === expectedBindingTimeoutInMilliseconds
+    s"equals to ${expectedBindingTimeoutInMilliseconds}" in Profile.bindingTimeoutInMilliseconds === expectedBindingTimeoutInMilliseconds
   }
 }

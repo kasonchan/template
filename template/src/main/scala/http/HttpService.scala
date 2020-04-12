@@ -3,7 +3,7 @@ package http
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.adapter._
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Directives.{complete, get, pathSingleSlash}
+import akka.http.scaladsl.server.Directives.{complete, get, path}
 import akka.http.scaladsl.server.Route
 
 import scala.concurrent.Future
@@ -13,7 +13,7 @@ import scala.concurrent.Future
   * @since 2020-03-15
   */
 object HttpService {
-  val routes: Route = pathSingleSlash {
+  val routes: Route = path("status") {
     get {
       complete {
         "READY"

@@ -3,8 +3,8 @@ package http
 import java.net.InetSocketAddress
 
 import akka.stream.BindFailedException
-import app.Service.system
-import app.Profile.bindingTimeoutInMilliseconds
+import app.Service
+import app.Profile
 import http.HttpService.{routes, start}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -16,14 +16,14 @@ import scala.concurrent.Await
   * @since 2020-03-28
   */
 class HttpServiceSpec extends AnyWordSpec with Matchers {
-  private val timeoutInMilliseconds = bindingTimeoutInMilliseconds
+  private val timeoutInMilliseconds = Profile.bindingTimeoutInMilliseconds
 
   "Http service" must {
     "starts successfully when binding to free 127.0.0.1:9000" in {
       val expectedHost = "127.0.0.1"
       val expectedPort = 9000
       val expectedRoutes = routes
-      val expectedSystem = system
+      val expectedSystem = Service.system
       val expectedInetSocketAddress =
         new InetSocketAddress(expectedHost, expectedPort)
 
@@ -33,13 +33,14 @@ class HttpServiceSpec extends AnyWordSpec with Matchers {
           timeoutInMilliseconds
         )
         .localAddress mustBe expectedInetSocketAddress
+      ""
     }
 
     "starts fail when binding to 127.0.0.1:9000 is not free" in {
       val expectedHost = "127.0.0.1"
       val expectedPort = 9000
       val expectedRoutes = routes
-      val expectedSystem = system
+      val expectedSystem = Service.system
 
       intercept[BindFailedException] {
         start(expectedHost, expectedPort, expectedRoutes, expectedSystem)
