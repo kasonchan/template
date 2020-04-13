@@ -4,6 +4,19 @@ lazy val buildSettings = Seq(
   organization := "com.kasonchan",
   version := "0.0.1",
   scalaVersion := "2.13.1"
+) ++ rpmBuildSettings
+
+lazy val rpmBuildSettings = Seq(
+  maintainer in Linux := "Kason Chan <kasonl.chan@gmail.com>",
+  packageSummary in Linux := "Template",
+  packageDescription in Rpm := "Template",
+  rpmBrpJavaRepackJars := true,
+  rpmRelease := "1",
+  rpmVendor := "kasonchan",
+  rpmGroup := Some("template-rpm"),
+  rpmUrl := Some("https://github.com/kasonchan/template"),
+  rpmLicense := Some("Apache v2"),
+  rpmChangelogFile := None
 )
 
 lazy val akkaHttpVersion = "10.1.11"
@@ -63,3 +76,4 @@ lazy val template = (project in file("."))
     Defaults.itSettings,
     allSettings
   )
+  .enablePlugins(JavaServerAppPackaging, SystemdPlugin, RpmPlugin)
