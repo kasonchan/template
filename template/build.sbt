@@ -1,10 +1,12 @@
+import com.typesafe.sbt.packager.docker.{Cmd, ExecCmd}
+
 val name = "template"
 
 lazy val buildSettings = Seq(
   organization := "com.kasonchan",
   version := "0.0.1",
   scalaVersion := "2.13.1"
-) ++ rpmBuildSettings
+) ++ rpmBuildSettings ++ dockerBuildSettings
 
 lazy val rpmBuildSettings = Seq(
   maintainer in Linux := "Kason Chan <kasonl.chan@gmail.com>",
@@ -17,6 +19,26 @@ lazy val rpmBuildSettings = Seq(
   rpmUrl := Some("https://github.com/kasonchan/template"),
   rpmLicense := Some("Apache v2"),
   rpmChangelogFile := None
+)
+
+lazy val dockerBuildSettings = Seq(
+  mappings in Docker += file(s"target/rpm/RPMS/noarch/$name-${version.value}-${rpmRelease.value}.noarch.rpm") ->
+    s"${name}-${version.value}-${rpmRelease.value}.noarch.rpm",
+  mappings in Docker += file("scripts/start.sh") -> "start.sh",
+  mappings in Docker += file("scripts/stop.sh") -> "stop.sh",
+  dockerExposedPorts := Seq(11010),
+  dockerCommands := Seq(
+    Cmd("FROM", "centos:latest"),
+    Cmd("EXPOSE", "11010"),
+    ExecCmd("RUN", "cat", "/etc/centos-release"),
+    Cmd("WORKDIR", "/workspace"),
+    Cmd("ADD", s"$name-${version.value}-${rpmRelease.value}.noarch.rpm", "/workspace"),
+    Cmd("ADD", "start.sh", "/workspace"),
+    Cmd("ADD", "stop.sh", "/workspace"),
+    Cmd("RUN", "yum", "install", "-y", "java-1.8.0-openjdk"),
+    Cmd("RUN", "rpm2cpio", s"$name-${version.value}-${rpmRelease.value}.noarch.rpm", "|", "cpio", "-idmv"),
+    ExecCmd("RUN", "ls", "-laRth", ".")
+  )
 )
 
 lazy val akkaHttpVersion = "10.1.11"
@@ -55,7 +77,8 @@ val baseSettings = Seq(
   scalastyleFailOnError := true,
   scalastyleFailOnWarning := true,
 
-  coverageEnabled := true,
+  coverageEnabled in(Test, compile) := true,
+  coverageEnabled in(Compile, compile) := false,
   coverageMinimum := 100,
   coverageFailOnMinimum := true,
 
@@ -76,4 +99,4 @@ lazy val template = (project in file("."))
     Defaults.itSettings,
     allSettings
   )
-  .enablePlugins(JavaServerAppPackaging, SystemdPlugin, RpmPlugin)
+  .enablePlugins(JavaServerAppPackaging, SystemdPlugin, RpmPlugin, DockerPlugin)
