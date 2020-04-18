@@ -28,9 +28,11 @@ class WebSpec extends AnyWordSpec with Matchers {
     }
 
     "returns Fatal after receiving Activate request if server bind failed" in {
+      val failedPort = 9000
       val testKit = ActorTestKit()
-      val occupiedWeb = testKit.spawn(Web(), "occupiedWeb")
-      val web = testKit.spawn(Web(), "web")
+      val occupiedWeb =
+        testKit.spawn(Web(port = failedPort), "occupiedWeb")
+      val web = testKit.spawn(Web(port = failedPort), "web")
       val probe = testKit.createTestProbe[Message]()
       val expectedResponse1 = Response(Ready)
       val expectedResponse2 = Response(Fatal)
@@ -94,9 +96,11 @@ class WebSpec extends AnyWordSpec with Matchers {
 
   "Fatal Web" must {
     "returns Fatal after receiving Status request" in {
+      val failedPort = 9000
       val testKit = ActorTestKit()
-      val occupiedWeb = testKit.spawn(Web(), "occupiedWeb")
-      val web = testKit.spawn(Web(), "web")
+      val occupiedWeb =
+        testKit.spawn(Web(port = failedPort), "occupiedWeb")
+      val web = testKit.spawn(Web(port = failedPort), "web")
       val probe = testKit.createTestProbe[Message]()
       val expectedResponse1 = Response(Ready)
       val expectedResponse2 = Response(Fatal)
@@ -111,9 +115,11 @@ class WebSpec extends AnyWordSpec with Matchers {
     }
 
     "returns nothing after receiving Activate request" in {
+      val failedPort = 9000
       val testKit = ActorTestKit()
-      val occupiedWeb = testKit.spawn(Web(), "occupiedWeb")
-      val web = testKit.spawn(Web(), "web")
+      val occupiedWeb =
+        testKit.spawn(Web(port = failedPort), "occupiedWeb")
+      val web = testKit.spawn(Web(port = failedPort), "web")
       val probe = testKit.createTestProbe[Message]()
       val expectedResponse1 = Response(Ready)
       val expectedResponse2 = Response(Fatal)

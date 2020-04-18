@@ -21,4 +21,6 @@ object Service {
   implicit val ec: ExecutionContextExecutor = system.executionContext
   val init: Future[Message] =
     guardian.ask(ref => Request(protocol.command.Activate, ref))
+  def status: Future[Message] =
+    guardian.ask(ref => Request(protocol.command.Status, ref))
 }

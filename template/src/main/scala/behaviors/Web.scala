@@ -6,6 +6,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import app.Profile
 import http.HttpService
+import org.slf4j.{Logger, LoggerFactory}
 import protocol.command.{Activate, Status}
 import protocol.message.{Message, Request, Response}
 import protocol.status.{Fatal, Ready, Starting, Status}
@@ -18,11 +19,16 @@ import scala.util.{Failure, Success, Try}
   * @since 2020-03-21
   */
 object Web {
-  def apply(): Behavior[Message] = starting()
+  def apply(
+      host: String = Profile.serviceHost,
+      port: Int = Profile.servicePort
+  ): Behavior[Message] = starting(host = host, port = port)
 
   private val httpServer = HttpService
 
   private def starting(
+      host: String,
+      port: Int,
       currentStatus: Status = Starting,
       serverBinding: Option[ServerBinding] = None
   ): Behavior[Message] =
@@ -31,9 +37,9 @@ object Web {
         case Request(Activate, replyTo) =>
           context.log.info("[{}]", currentStatus.toString.toUpperCase)
           val futureBinding: Future[Http.ServerBinding] =
-            HttpService.start(
-              Profile.serviceHost,
-              Profile.servicePort,
+            httpServer.start(
+              host,
+              port,
               httpServer.routes,
               context.system
             )
@@ -47,7 +53,7 @@ object Web {
             Await.result(futureBinding, Profile.bindingTimeoutInMilliseconds)
           } match {
             case Success(v) =>
-              context.log.info("Successfully bounded to {}", v.localAddress)
+              context.log.info("Successfully binded to {}", v.localAddress)
               replyTo ! Response(Ready)
               context.log.info("[{}]", Ready.toString.toUpperCase)
               ready(serverBinding = Some(v))
@@ -58,7 +64,7 @@ object Web {
                 ex.getMessage
               )
               replyTo ! Response(Fatal)
-              context.log.info("[{}]", Fatal.toString.toUpperCase)
+              context.log.error("[{}]", Fatal.toString.toUpperCase)
               fatal(serverBinding = None)
           }
         case Request(Status, replyTo) =>
@@ -79,6 +85,7 @@ object Web {
       Behaviors.receiveMessage {
         case Request(Status, replyTo) =>
           replyTo ! Response(currentStatus)
+          context.log.debug("[{}]", currentStatus.toString.toUpperCase)
           Behaviors.same
         case message: Message =>
           context.log.debug("{}", message)
@@ -94,6 +101,7 @@ object Web {
       Behaviors.receiveMessage {
         case Request(Status, replyTo) =>
           replyTo ! Response(currentStatus)
+          context.log.debug("[{}]", currentStatus.toString.toUpperCase)
           Behaviors.same
         case message: Message =>
           context.log.debug("{}", message)

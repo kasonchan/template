@@ -28,13 +28,14 @@ class AppSpec extends AnyWordSpec with Matchers {
         expectedSystem.systemActorOf(Guardian(), "guardian")
 
       import akka.util.Timeout
-      implicit val timeout: Timeout = 30.seconds
+      implicit val timeout: Timeout = Profile.bindingTimeoutInMilliseconds
       implicit val ec: ExecutionContextExecutor = system.executionContext
 
       val expectedResult = Response(Starting)
       val expectedGuardianResult = Future(Success(Response(Starting)))
 
       Service.init.map(value => value mustBe expectedResult)
+      Service.status.map(value => value mustBe expectedResult)
 
       val expectResult: Future[Message] =
         Service.guardian.ask(ref => Request(protocol.command.Activate, ref))
