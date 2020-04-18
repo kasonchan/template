@@ -3,16 +3,16 @@ package http
 import java.net.InetSocketAddress
 
 import akka.stream.BindFailedException
-import app.{Profile, Service}
+import app.{ Profile, Service }
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.concurrent.Await
 
 /**
-  * @author kasonchan
-  * @since 2020-03-28
-  */
+ * @author kasonchan
+ * @since 2020-03-28
+ */
 class HttpServiceSpec extends AnyWordSpec with Matchers {
   private val timeoutInMilliseconds = Profile.bindingTimeoutInMilliseconds
 
@@ -29,8 +29,7 @@ class HttpServiceSpec extends AnyWordSpec with Matchers {
         .result(
           HttpService
             .start(expectedHost, expectedPort, expectedRoutes, expectedSystem),
-          timeoutInMilliseconds
-        )
+          timeoutInMilliseconds)
         .localAddress mustBe expectedInetSocketAddress
     }
 
@@ -45,13 +44,11 @@ class HttpServiceSpec extends AnyWordSpec with Matchers {
           expectedHost,
           expectedPort,
           expectedRoutes,
-          expectedSystem
-        )
+          expectedSystem)
         Await.result(
           HttpService
             .start(expectedHost, expectedPort, expectedRoutes, expectedSystem),
-          timeoutInMilliseconds
-        )
+          timeoutInMilliseconds)
       }
     }
   }

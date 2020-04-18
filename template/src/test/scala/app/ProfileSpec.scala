@@ -6,9 +6,9 @@ import org.scalatest.wordspec.AnyWordSpec
 import scala.concurrent.duration._
 
 /**
-  * @author kasonchan
-  * @since 2020-03-19
-  */
+ * @author kasonchan
+ * @since 2020-03-19
+ */
 class ProfileSpec extends AnyWordSpec with Matchers {
   private val expectedServiceName = "service"
   private val expectedServiceHost = "127.0.0.1"

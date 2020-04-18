@@ -3,19 +3,19 @@ package http
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.adapter._
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Directives.{complete, get, path}
+import akka.http.scaladsl.server.Directives.{ complete, get, path }
 import akka.http.scaladsl.server.Route
-import app.{Profile, Service}
-import org.slf4j.{Logger, LoggerFactory}
+import app.{ Profile, Service }
+import org.slf4j.{ Logger, LoggerFactory }
 import protocol.message.Response
 
-import scala.concurrent.{Await, Future}
-import scala.util.{Success, Try}
+import scala.concurrent.{ Await, Future }
+import scala.util.{ Success, Try }
 
 /**
-  * @author kasonchan
-  * @since 2020-03-15
-  */
+ * @author kasonchan
+ * @since 2020-03-15
+ */
 object HttpService {
   private val log: Logger = LoggerFactory.getLogger(super.getClass)
 
@@ -45,8 +45,7 @@ object HttpService {
       host: String,
       port: Int,
       routes: Route,
-      system: ActorSystem[_]
-  ): Future[Http.ServerBinding] = {
+      system: ActorSystem[_]): Future[Http.ServerBinding] = {
     // Akka HTTP still needs a classic ActorSystem to start
     implicit val classicSystem: akka.actor.ActorSystem = system.toClassic
     import system.executionContext

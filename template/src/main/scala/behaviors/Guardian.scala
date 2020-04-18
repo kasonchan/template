@@ -1,14 +1,14 @@
 package behaviors
 
 import akka.actor.typed.scaladsl.Behaviors
-import akka.actor.typed.{Behavior, DispatcherSelector}
-import protocol.message.{Message, Request, Response}
-import protocol.status.{Fatal, Ready, Starting, Status}
+import akka.actor.typed.{ Behavior, DispatcherSelector }
+import protocol.message.{ Message, Request, Response }
+import protocol.status.{ Fatal, Ready, Starting, Status }
 
 /**
-  * @author kasonchan
-  * @since 2020-03-21
-  */
+ * @author kasonchan
+ * @since 2020-03-21
+ */
 object Guardian {
   def apply(): Behavior[Message] = starting()
 
@@ -20,21 +20,18 @@ object Guardian {
           // https://doc.akka.io/docs/akka/current/typed/dispatchers.html#selecting-a-dispatcher
           val web = context.spawn(Web(), "web", DispatcherSelector.blocking())
           web ! Request(protocol.command.Activate, context.self)
-          context.log
-            .info(
-              "[{}]-{}->[{}]",
-              currentStatus.toString.toUpperCase,
-              protocol.command.Activate.toString,
-              Ready.toString.toUpperCase
-            )
+          context.log.info(
+            "[{}]-{}->[{}]",
+            currentStatus.toString.toUpperCase,
+            protocol.command.Activate.toString,
+            Ready.toString.toUpperCase)
           replyTo ! Response(currentStatus)
           Behaviors.same
         case Request(protocol.command.Status, replyTo) =>
           replyTo ! Response(currentStatus)
           Behaviors.same
         case Response(responseStatus) =>
-          context.log
-            .info("[{}]", responseStatus.toString.toUpperCase)
+          context.log.info("[{}]", responseStatus.toString.toUpperCase)
           responseStatus match {
             case Ready    => ready()
             case Fatal    => fatal()

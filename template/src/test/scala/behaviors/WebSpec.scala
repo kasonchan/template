@@ -4,14 +4,14 @@ import akka.actor.testkit.typed.scaladsl.ActorTestKit
 import app.Profile
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import protocol.command.{Activate, Status}
-import protocol.message.{Message, Request, Response}
-import protocol.status.{Fatal, Ready, Starting}
+import protocol.command.{ Activate, Status }
+import protocol.message.{ Message, Request, Response }
+import protocol.status.{ Fatal, Ready, Starting }
 
 /**
-  * @author kasonchan
-  * @since 2020-03-28
-  */
+ * @author kasonchan
+ * @since 2020-03-28
+ */
 class WebSpec extends AnyWordSpec with Matchers {
   private val timeoutInMilliseconds = Profile.bindingTimeoutInMilliseconds
 

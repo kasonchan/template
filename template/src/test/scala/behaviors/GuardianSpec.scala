@@ -1,18 +1,18 @@
 package behaviors
 
 import akka.actor.testkit.typed.CapturedLogEvent
-import akka.actor.testkit.typed.scaladsl.{BehaviorTestKit, TestInbox}
+import akka.actor.testkit.typed.scaladsl.{ BehaviorTestKit, TestInbox }
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.slf4j.event.Level
-import protocol.command.{Activate, Status}
-import protocol.message.{Message, Request, Response}
-import protocol.status.{Fatal, Ready, Starting}
+import protocol.command.{ Activate, Status }
+import protocol.message.{ Message, Request, Response }
+import protocol.status.{ Fatal, Ready, Starting }
 
 /**
-  * @author kasonchan
-  * @since 2020-03-21
-  */
+ * @author kasonchan
+ * @since 2020-03-21
+ */
 class GuardianSpec extends AnyWordSpec with Matchers {
   "Starting Guardian" must {
     "returns Starting after receiving Activate request" in {
@@ -21,8 +21,7 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       val expectedMessage = Response(Starting)
       val expectedLogEntries = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
-        CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]")
-      )
+        CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"))
 
       behaviorTestKit.run(Request(Activate, guardian.ref))
       guardian.expectMessage(expectedMessage)
@@ -45,13 +44,11 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       val expectedMessage1 = Response(Starting)
       val expectedLogEntries1 = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
-        CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]")
-      )
+        CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"))
       val expectedLogEntries2 = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
         CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"),
-        CapturedLogEvent(Level.INFO, "[READY]")
-      )
+        CapturedLogEvent(Level.INFO, "[READY]"))
 
       behaviorTestKit.run(Request(Activate, guardian.ref))
       guardian.expectMessage(expectedMessage1)
@@ -66,13 +63,11 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       val expectedMessage1 = Response(Starting)
       val expectedLogEntries1 = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
-        CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]")
-      )
+        CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"))
       val expectedLogEntries2 = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
         CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"),
-        CapturedLogEvent(Level.INFO, "[FATAL]")
-      )
+        CapturedLogEvent(Level.INFO, "[FATAL]"))
 
       behaviorTestKit.run(Request(Activate, guardian.ref))
       guardian.expectMessage(expectedMessage1)
@@ -99,8 +94,7 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       val expectedLogEntries = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
         CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"),
-        CapturedLogEvent(Level.INFO, "[READY]")
-      )
+        CapturedLogEvent(Level.INFO, "[READY]"))
 
       behaviorTestKit.run(Request(Activate, guardian.ref))
       behaviorTestKit.run(Response(Ready))
@@ -117,8 +111,7 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       val expectedLogEntries = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
         CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"),
-        CapturedLogEvent(Level.INFO, "[READY]")
-      )
+        CapturedLogEvent(Level.INFO, "[READY]"))
 
       behaviorTestKit.run(Request(Activate, guardian.ref))
       behaviorTestKit.run(Response(Ready))
@@ -136,8 +129,7 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       val expectedLogEntries = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
         CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"),
-        CapturedLogEvent(Level.INFO, "[FATAL]")
-      )
+        CapturedLogEvent(Level.INFO, "[FATAL]"))
 
       behaviorTestKit.run(Request(Activate, guardian.ref))
       behaviorTestKit.run(Response(Fatal))
@@ -154,8 +146,7 @@ class GuardianSpec extends AnyWordSpec with Matchers {
       val expectedLogEntries = Seq(
         CapturedLogEvent(Level.INFO, "[STARTING]"),
         CapturedLogEvent(Level.INFO, "[STARTING]-Activate->[READY]"),
-        CapturedLogEvent(Level.INFO, "[FATAL]")
-      )
+        CapturedLogEvent(Level.INFO, "[FATAL]"))
 
       behaviorTestKit.run(Request(Activate, guardian.ref))
       behaviorTestKit.run(Response(Fatal))

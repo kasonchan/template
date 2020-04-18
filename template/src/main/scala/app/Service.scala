@@ -1,17 +1,17 @@
 package app
 
 import akka.actor.typed.scaladsl.AskPattern._
-import akka.actor.typed.{ActorRef, ActorSystem}
+import akka.actor.typed.{ ActorRef, ActorSystem }
 import akka.util.Timeout
-import behaviors.{Guardian, System}
-import protocol.message.{Message, Request}
+import behaviors.{ Guardian, System }
+import protocol.message.{ Message, Request }
 
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.{ ExecutionContextExecutor, Future }
 
 /**
-  * @author kasonchan
-  * @since 2020-04-04
-  */
+ * @author kasonchan
+ * @since 2020-04-04
+ */
 object Service {
   implicit val system: ActorSystem[Message] =
     ActorSystem(System(), Profile.serviceName)
