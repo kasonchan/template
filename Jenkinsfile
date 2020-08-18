@@ -7,11 +7,12 @@ pipeline {
                 sh 'echo "------"'
                 sh 'ls -larth'
                 sh 'echo "------"'
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/usr/local/bin/sbt compile"
                 sh '''
                     cd template && 
-                    sbt ++$TRAVIS_SCALA_VERSION clean coverage test && 
-                    sbt ++$TRAVIS_SCALA_VERSION coverageReport && 
-                    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
+                    "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/usr/local/bin/sbt test" && 
+                    "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/usr/local/bin/sbt coverageReport" && 
+                    "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/usr/local/bin/sbt coverageAggregate"
                 '''
             }
         }
