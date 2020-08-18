@@ -4,11 +4,12 @@ scala:
   - 2.13.1
 
 script:
-  - cd template &&  
+  - sudo apt-get install alien dpkg-dev debhelper build-essential &&
+    cd template &&  
     sbt ++$TRAVIS_SCALA_VERSION clean coverage test && 
     sbt ++$TRAVIS_SCALA_VERSION coverageReport && 
     sbt ++$TRAVIS_SCALA_VERSION coverageAggregate &&
     sbt ++$TRAVIS_SCALA_VERSION rpm:packageBin
     sbt ++$TRAVIS_SCALA_VERSION docker:publishLocal
 
-sudo: false
+sudo: true
