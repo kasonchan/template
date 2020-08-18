@@ -7,6 +7,7 @@ script:
   - cd template &&  
     sbt ++$TRAVIS_SCALA_VERSION clean coverage test && 
     sbt ++$TRAVIS_SCALA_VERSION coverageReport && 
-    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
+    sbt ++$TRAVIS_SCALA_VERSION coverageAggregate &&
+    sbt ++$TRAVIS_SCALA_VERSION docker:publishLocal
 
 sudo: false
