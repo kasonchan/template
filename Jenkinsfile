@@ -1,8 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'hseeberger/scala-sbt'
-        }
+    agent any
+    environment {
+      SBT_HOME = tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'
+      PATH = "${env.SBT_HOME}/bin:${env.PATH}"
     }
     stages {
         stage('Test') {
@@ -13,7 +13,8 @@ pipeline {
                 sh 'echo "------"'
                 sh 'cd template' 
                 sh "sbt test"
-                sh "sbt coverageReport"
+                sh "sbt coverageReport" 
+                sh "sbt coverageAggregate"
             }
         }
     }
