@@ -8,9 +8,9 @@ pipeline {
                 sh 'ls -larth'
                 sh 'echo "------"'
                 sh 'cd template' 
-                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt test"
-                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt coverageReport" 
-                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt coverageAggregate"
+                sh "sbt test"
+                sh "sbt coverageReport" 
+                sh "sbt coverageAggregate"
             }
         }
     }
