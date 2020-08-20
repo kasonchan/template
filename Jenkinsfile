@@ -13,10 +13,7 @@ pipeline {
         sh 'echo "------"'
         sh 'ls -larth'
         sh 'echo "------"'
-        sh 'cd template' 
-        sh "sbt test"
-        sh "sbt coverageReport" 
-        sh "sbt coverageAggregate"
+        sh 'cd template && ls -larth && sbt test && sbt coverageReport'
       }
     }
   }
